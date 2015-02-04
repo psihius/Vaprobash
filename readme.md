@@ -1,3 +1,6 @@
+# This repository
+Adds XHProf instalation script and some other various personal preferenses. Check original repository, I may have made pull requests with my stuff into it.
+
 # Vaprobash
 
 **Va**&#x200B;grant **Pro**&#x200B;visioning **Bash** Scripts
