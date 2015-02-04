@@ -42,7 +42,7 @@ if server_memory.empty?
 end
 
 if server_swap.empty?
-  server_swap = mem * 1.5
+  server_swap = server_memory * 1.5
 end
 
 # UTC        for Universal Coordinated Time
