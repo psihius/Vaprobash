@@ -4,7 +4,6 @@ export LANG=C.UTF-8
 
 PHP_TIMEZONE=$1
 HHVM=$2
-PHP_VERSION=$3
 
 if [[ $HHVM == "true" ]]; then
 
@@ -29,17 +28,7 @@ if [[ $HHVM == "true" ]]; then
 
     sudo service hhvm restart
 else
-    echo ">>> Installing PHP $PHP_VERSION"
-
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C
-
-    if [ $PHP_VERSION == "5.6" ]; then
-        # Add repo for PHP 5.6
-        sudo add-apt-repository -y ppa:ondrej/php5-5.6
-    fi
-
-    sudo apt-key update
-    sudo apt-get update
+    echo ">>> Installing PHP"
 
     # Install PHP
     # -qq implies -y --force-yes
