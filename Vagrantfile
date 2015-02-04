@@ -2,9 +2,9 @@
 # vi: set ft=ruby :
 
 # Config Github Settings
-github_username = "fideloper"
+github_username = "psihius"
 github_repo     = "Vaprobash"
-github_branch   = "1.3.1"
+github_branch   = "master"
 github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github_repo}/#{github_branch}"
 
 # Server Configuration
@@ -18,9 +18,32 @@ hostname        = "vaprobash.dev"
 #   172.16.0.1  - 172.31.255.254
 #   192.168.0.1 - 192.168.255.254
 server_ip             = "192.168.22.10"
-server_cpus           = "1"   # Cores
-server_memory         = "384" # MB
-server_swap           = "768" # Options: false | int (MB) - Guideline: Between one or two times the server_memory
+
+# If you leave the variables empty, they will be calculated to give the VM half the RAM and all CPU's available.
+server_cpus           = "" # Cores
+server_memory         = "" # MB
+server_swap           = "" # Options: false | int (MB) - Guideline: Between one or two times the server_memory
+
+host = RbConfig::CONFIG['host_os']
+if server_cpus.empty?
+  if host =~ /darwin/
+    server_cpus = `sysctl -n hw.ncpu`.to_i
+  elsif host =~ /linux/
+    server_cpus = `nproc`.to_i
+  end
+end
+
+if server_memory.empty?
+  if host =~ /darwin/
+      server_memory = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 2
+    elsif host =~ /linux/
+      server_memory = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 2
+    end
+end
+
+if server_swap.empty?
+  server_swap = mem * 1.5
+end
 
 # UTC        for Universal Coordinated Time
 # EST        for Eastern Standard Time
