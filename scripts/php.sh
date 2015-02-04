@@ -33,10 +33,7 @@ else
 
     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C
 
-    if [ $PHP_VERSION == "5.5" ]; then
-        # Add repo for PHP 5.5
-        sudo add-apt-repository -y ppa:ondrej/php5
-    else
+    if [ $PHP_VERSION == "5.6" ]; then
         # Add repo for PHP 5.6
         sudo add-apt-repository -y ppa:ondrej/php5-5.6
     fi

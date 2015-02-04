@@ -27,11 +27,6 @@ else
     github_url="$4"
 fi
 
-# Add repo for latest FULL stable Apache
-# (Required to remove conflicts with PHP PPA due to partial Apache upgrade within it)
-sudo add-apt-repository -y ppa:ondrej/apache2
-
-
 # Update Again
 sudo apt-key update
 sudo apt-get update
@@ -46,10 +41,10 @@ echo ">>> Configuring Apache"
 sudo usermod -a -G www-data vagrant
 
 # Apache Config
-# On separate lines since some may cause an error 
+# On separate lines since some may cause an error
 # if not installed
 sudo a2dismod mpm_prefork
-sudo a2dismod php5 
+sudo a2dismod php5
 sudo a2enmod mpm_worker rewrite actions ssl
 curl --silent -L $github_url/helpers/vhost.sh > vhost
 sudo chmod guo+x vhost
