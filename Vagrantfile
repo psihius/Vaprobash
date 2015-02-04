@@ -24,25 +24,29 @@ server_cpus           = "" # Cores
 server_memory         = "" # MB
 server_swap           = "" # Options: false | int (MB) - Guideline: Between one or two times the server_memory
 
-host = RbConfig::CONFIG['host_os']
+host_os = RbConfig::CONFIG['host_os']
 if server_cpus.empty?
-  if host =~ /darwin/
+  if host_os =~ /darwin/
     server_cpus = `sysctl -n hw.ncpu`.to_i
-  elsif host =~ /linux/
+  elseif host_os =~ /linux/
     server_cpus = `nproc`.to_i
+  else
+    server_cpus = 2
   end
 end
 
 if server_memory.empty?
-  if host =~ /darwin/
+  if host_os =~ /darwin/
       server_memory = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 2
-    elsif host =~ /linux/
+    elseif host_os =~ /linux/
       server_memory = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 2
+    else
+      server_memory = 1024
     end
 end
 
 if server_swap.empty?
-  server_swap = server_memory * 1.5
+  server_swap = server_memory
 end
 
 # UTC        for Universal Coordinated Time
