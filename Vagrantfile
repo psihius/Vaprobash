@@ -131,7 +131,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant",
             id: "core",
             :nfs => true,
-            :mount_options => ['nolock,vers=3,udp,noatime']
+            :mount_options => ['rw', 'noatime', 'vers=3', 'tcp', 'nolock', 'fsc']
 
   # If using VirtualBox
   config.vm.provider :virtualbox do |vb|
@@ -173,7 +173,7 @@ Vagrant.configure("2") do |config|
 
     config.cache.synced_folder_opts = {
         type: :nfs,
-        mount_options: ['rw', 'vers=3', 'tcp', 'nolock']
+        mount_options: ['rw', 'vers=3', 'tcp', 'nolock', 'fsc']
     }
   end
 
@@ -196,6 +196,9 @@ Vagrant.configure("2") do |config|
 
   # Provision Base Packages
   config.vm.provision "shell", path: "#{github_url}/scripts/base.sh", args: [github_url, server_swap, server_timezone]
+
+  # Provision cachefilesd to cache NFS files
+  config.vm.provision "shell", path: "#{github_url}/scripts/cachefilesd.sh", privileged: true
 
   # optimize base box
   config.vm.provision "shell", path: "#{github_url}/scripts/base_box_optimizations.sh", privileged: true
