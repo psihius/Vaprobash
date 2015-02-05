@@ -9,7 +9,14 @@ github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github
 
 # Server Configuration
 
-hostname        = "vaprobash.dev"
+# Virtual machine name to set
+vm_name          = "varpobash"
+
+# Hostname for VM, default same as VM name. Change to hostname = "yourname" if required
+hostname         = vm_name
+
+# Additional host names to register, works only if vagrant-hostmanager plugin is installed
+additional_hosts = ["phpmyadmin", "xhprof"]
 
 # Set a local private network IP address.
 # See http://en.wikipedia.org/wiki/Private_network for explanation
@@ -28,7 +35,7 @@ host_os = RbConfig::CONFIG['host_os']
 if server_cpus.empty?
   if host_os =~ /darwin/
     server_cpus = `sysctl -n hw.ncpu`.to_i
-  elseif host_os =~ /linux/
+  elsif host_os =~ /linux/
     server_cpus = `nproc`.to_i
   else
     server_cpus = 2
@@ -38,7 +45,7 @@ end
 if server_memory.empty?
   if host_os =~ /darwin/
       server_memory = `sysctl -n hw.memsize`.to_i / 1024 / 1024 / 2
-    elseif host_os =~ /linux/
+    elsif host_os =~ /linux/
       server_memory = `grep 'MemTotal' /proc/meminfo | sed -e 's/MemTotal://' -e 's/ kB//'`.to_i / 1024 / 2
     else
       server_memory = 1024
@@ -119,6 +126,9 @@ Vagrant.configure("2") do |config|
     config.hostmanager.manage_host = true
     config.hostmanager.ignore_private_ip = false
     config.hostmanager.include_offline = false
+    if !additional_hosts.empty?
+      config.hostmanager.aliases = additional_hosts
+    end
   end
 
   # Create a hostname, don't forget to put it to the `hosts` file
@@ -139,7 +149,7 @@ Vagrant.configure("2") do |config|
   # If using VirtualBox
   config.vm.provider :virtualbox do |vb|
 
-    vb.name = "Vaprobash"
+    vb.name = vm_name
 
     # Set server cpus
     vb.customize ["modifyvm", :id, "--cpus", server_cpus]
@@ -348,7 +358,13 @@ Vagrant.configure("2") do |config|
   # config.vm.provision "shell", path: "#{github_url}/scripts/ansible.sh"
 
   # Install XHProf profiler for PHP, requires MySQL/MariaDB
-  # config.vm.provision "shell", path: "#{github_url}/scripts/xhprof.sh", args: [mysql_root_password]
+  # If 'xhprof' is removed from additional_hosts, then vhost for xhprof will not be installed
+  if additional_hosts.include? 'xhprof'
+    xhprof_hostname = 'xhprof'
+  else
+    xhprof_hostname = ''
+  end
+  # config.vm.provision "shell", path: "#{github_url}/scripts/xhprof.sh", args: [server_ip, mysql_root_password, xhprof_hostname]
 
   ####
   # Local Scripts

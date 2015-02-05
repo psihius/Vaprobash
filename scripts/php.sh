@@ -34,6 +34,14 @@ else
     # -qq implies -y --force-yes
     sudo apt-get install -qq php5-cli php5-fpm php5-mysql php5-pgsql php5-sqlite php5-curl php5-gd php5-gmp php5-mcrypt php5-memcached php5-imagick php5-intl php5-xdebug
 
+    php5enmod mcrypt
+
+    # Logging is not added by default, so let's add it
+    sudo mkdir /var/log/php
+    chown -R www-data:adm /var/log/php
+    sudo sed -i "s,;error_log = .*,error_log = /var/log/php/error_fpm.log," /etc/php5/fpm/php.ini
+    sudo sed -i "s,;error_log = .*,error_log = /var/log/php/error_cli.log," /etc/php5/cli/php.ini
+
     # Set PHP FPM to listen on TCP instead of Socket
     sudo sed -i "s/listen =.*/listen = 127.0.0.1:9000/" /etc/php5/fpm/pool.d/www.conf
 
