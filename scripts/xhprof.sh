@@ -45,6 +45,15 @@ else
     if [[ $APACHE_IS_INSTALLED -eq 0 ]]; then
         sudo vhost -s $1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $hostname
     fi
+
+    cat > "$public_folder/xhprof/includes/config.inc.php" << EOF
+<?php
+return array(
+        'url_base' => 'http://$hostname/',
+        'url_static' => null, // When undefined, it defaults to $config['url_base'] . 'public/'. This should be absolute URL.
+        'pdo' => new PDO('mysql:dbname=xhprof;host=localhost;charset=utf8', 'root', '$2'),
+);
+EOF
 fi
 
 cat > $(find /etc/php5 -name xhprof.ini) << EOF
@@ -53,15 +62,6 @@ xhprof.output_dir = "/var/tmp/xhprof"
 
 auto_prepend_file = $public_folder/inc/prepend.php
 auto_append_file = $public_folder/inc/append.php
-EOF
-
-cat > "$public_folder/xhprof/includes/config.inc.php" << EOF
-<?php
-return array(
-        'url_base' => 'http://$hostname/',
-        'url_static' => null, // When undefined, it defaults to $config['url_base'] . 'public/'. This should be absolute URL.
-        'pdo' => new PDO('mysql:dbname=xhprof;host=localhost;charset=utf8', 'root', '$2'),
-);
 EOF
 
 sudo mysql -u root -p$2 << EOF
