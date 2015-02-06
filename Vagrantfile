@@ -366,6 +366,15 @@ Vagrant.configure("2") do |config|
   end
   # config.vm.provision "shell", path: "#{github_url}/scripts/xhprof.sh", args: [server_ip, mysql_root_password, xhprof_hostname]
 
+  # Install phpMyAdmin, requires MySQL/MariaDB
+  # If 'phpmyadmin' is removed from additional_hosts, then vhost for phpmyadmin will not be installed
+  if additional_hosts.include? 'phpmyadmin'
+    phpmyadmin_hostname = 'phpmyadmin'
+  else
+    phpmyadmin_hostname = ''
+  end
+  # config.vm.provision "shell", path: "#{github_url}/scripts/phpmyadmin.sh", args: [server_ip, mysql_root_password, phpmyadmin_hostname]
+
   ####
   # Local Scripts
   # Any local scripts you may want to run post-provisioning.

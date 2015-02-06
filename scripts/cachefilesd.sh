@@ -2,4 +2,4 @@
 
 apt-get install -qq cachefilesd
 echo "RUN=yes" > /etc/default/cachefilesd
-service cachefilesd restart
+sudo service cachefilesd restart

@@ -15,7 +15,7 @@ sudo apache2 -v > /dev/null 2>$1
 APACHE_IS_INSTALLED=$?
 
 # Test if PHP is installed
-php -v > /dev/null 2>&1
+sudo php -v > /dev/null 2>&1
 PHP_IS_INSTALLED=$?
 
 if [[ $PHP_IS_INSTALLED -ne 0 ]]; then
