@@ -108,7 +108,8 @@ Here's a quickstart screencast!
 	* Symfony
 	* PHPUnit
 	* MailCatcher
-	* Ansible
+    * Ansible
+	* Android
 
 ## The Vagrantfile
 
