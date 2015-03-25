@@ -63,6 +63,18 @@ sudo chmod guo+x vhost
 sudo mv vhost /usr/local/bin
 
 # Create a virtualhost to start, with SSL certificate
+
+echo "\n\n"
+echo $server_ip
+echo $public_folder
+echo $alias
+echo github_url
+echo "\n\n"
+echo "sudo vhost -s $server_ip.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $alias"
+echo "\n\n"
+sleep 5
+
+
 sudo vhost -s $server_ip.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $alias
 sudo a2dissite 000-default
 
