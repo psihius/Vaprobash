@@ -15,14 +15,22 @@ echo ">>> Installing Apache Server"
 
 [[ -z $1 ]] && { echo "!!! IP address not set. Check the Vagrant file."; exit 1; }
 
+server_ip="$1"
+
 if [[ -z $2 ]]; then
     public_folder="/vagrant"
 else
     public_folder="$2"
 fi
 
+if [[ -z $3 ]]; then
+    alias="$1"
+else
+    alias="$3"
+fi
+
 if [[ -z $4 ]]; then
-    github_url="https://raw.githubusercontent.com/fideloper/Vaprobash/master"
+    github_url="https://raw.githubusercontent.com/psihius/Vaprobash/master"
 else
     github_url="$4"
 fi
@@ -55,7 +63,7 @@ sudo chmod guo+x vhost
 sudo mv vhost /usr/local/bin
 
 # Create a virtualhost to start, with SSL certificate
-sudo vhost -s $1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $3
+sudo vhost -s $server_ip.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $alias
 sudo a2dissite 000-default
 
 # If PHP is installed or HHVM is installed, proxy PHP requests to it
