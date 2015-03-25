@@ -27,6 +27,10 @@ else
     github_url="$4"
 fi
 
+# Add repo for latest FULL stable Apache
+# (Required to remove conflicts with PHP PPA due to partial Apache upgrade within it)
+sudo add-apt-repository -y ppa:ondrej/apache2
+
 # Update Again
 sudo apt-key update
 sudo apt-get update
@@ -51,7 +55,7 @@ sudo chmod guo+x vhost
 sudo mv vhost /usr/local/bin
 
 # Create a virtualhost to start, with SSL certificate
-sudo vhost -s $1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $3
+sudo vhost -s "$1.xip.io" -d "$public_folder" -p /etc/ssl/xip.io -c xip.io -a "$3"
 sudo a2dissite 000-default
 
 # If PHP is installed or HHVM is installed, proxy PHP requests to it
