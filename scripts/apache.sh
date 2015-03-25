@@ -55,7 +55,7 @@ sudo chmod guo+x vhost
 sudo mv vhost /usr/local/bin
 
 # Create a virtualhost to start, with SSL certificate
-sudo vhost -s "$1.xip.io" -d "$public_folder" -p /etc/ssl/xip.io -c xip.io -a "$3"
+sudo vhost -s $1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $3
 sudo a2dissite 000-default
 
 # If PHP is installed or HHVM is installed, proxy PHP requests to it

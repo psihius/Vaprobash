@@ -21,7 +21,7 @@ Assumes /etc/apache2/sites-available and /etc/apache2/sites-enabled setup used
           This *ASSUMES* a .crt and a .key file exists
             at file path /provided-file-path/your-server-or-cert-name.[crt|key].
           Otherwise you can except Apache errors when you reload Apache.
-          Ensure Apache's mod_ssl is enabled via "sudo a2enmod ssl".
+          Ensure Apache\'s mod_ssl is enabled via "sudo a2enmod ssl".
     -c    Certificate filename. "xip.io" becomes "xip.io.key" and "xip.io.crt".
 
     Example Usage. Serve files from /var/www/xip.io at http(s)://192.168.33.10.xip.io
