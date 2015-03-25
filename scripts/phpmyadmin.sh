@@ -37,7 +37,7 @@ public_folder=$?
 
 # Make a vhost for nginx
 if [[ $NGING_IS_INSTALLED -eq 0 ]]; then
-    sudo ngxcb -d $public_folder -n $hostname -s $hostname -s "$1.xip.io $hostname" -e
+    sudo ngxcb -d $public_folder -n $hostname -s "$1.xip.io $hostname" -e
 fi
 
 # MAke a vhost for Apache
