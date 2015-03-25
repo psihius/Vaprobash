@@ -42,7 +42,7 @@ fi
 
 # MAke a vhost for Apache
 if [[ $APACHE_IS_INSTALLED -eq 0 ]]; then
-    sudo vhost -s $1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $hostname
+    sudo vhost -s $1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a "$1.xip.io $hostname"
 else
     # phpMyAdmin cannot be installed without a web server - so we purge apache from system
     sudo apt-get purge -qq apache2*
