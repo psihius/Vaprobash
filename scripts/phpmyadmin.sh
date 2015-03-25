@@ -32,17 +32,17 @@ echo "phpmyadmin	phpmyadmin/password-confirm	password	$2" | sudo debconf-set-sel
 echo "phpmyadmin	phpmyadmin/reconfigure-webserver	multiselect	apache1" | sudo debconf-set-selections
 
 sudo apt-get install -y -qq phpmyadmin
-sudo find /usr ! -path "*/doc/*" ! -path "*/dbconfig*" -type d -name phpmyadmin > /dev/null 2>&1
-public_folder=$?
+public_folder="$(sudo find /usr ! -path "*/doc/*" ! -path "*/dbconfig*" -type d -name phpmyadmin)"
+
 
 # Make a vhost for nginx
 if [[ $NGING_IS_INSTALLED -eq 0 ]]; then
-    sudo ngxcb -d $public_folder -n $hostname -s "$1.xip.io $hostname" -e
+    sudo ngxcb -d $public_folder -n $3 -s "$3.$1.xip.io $3" -e
 fi
 
 # MAke a vhost for Apache
 if [[ $APACHE_IS_INSTALLED -eq 0 ]]; then
-    sudo vhost -s $1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a "$1.xip.io $hostname"
+    sudo vhost -s $3.$1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $3
 else
     # phpMyAdmin cannot be installed without a web server - so we purge apache from system
     sudo apt-get purge -qq apache2*

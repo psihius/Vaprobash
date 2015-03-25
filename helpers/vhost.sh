@@ -174,15 +174,6 @@ if [ -f "$DocumentRoot/$ServerName.conf" ]; then
     echo 'vHost already exists. Aborting'
     show_usage
 else
-    echo
-    echo
-    echo $DocumentRoot
-    echo $ServerName
-    echo $Alias
-    echo $ServerAlias
-    echo
-    echo
-    sleep 10
     create_vhost > /etc/apache2/sites-available/${ServerName}.conf
 
     # Add :443 handling
