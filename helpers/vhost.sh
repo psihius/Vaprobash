@@ -38,16 +38,6 @@ exit 1
 #   To be outputted into new file
 #
 function create_vhost {
-    echo
-    echo "Inside"
-    echo
-    echo $DocumentRoot
-    echo $ServerName
-    echo $Alias
-    echo $ServerAlias
-    echo
-    echo
-    sleep 10
 cat <<- _EOF_
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
