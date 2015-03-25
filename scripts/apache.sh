@@ -68,7 +68,7 @@ echo
 echo $server_ip
 echo $public_folder
 echo $alias
-echo github_url
+echo $github_url
 echo sudo vhost -s $server_ip.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $alias
 echo
 echo
