@@ -140,11 +140,16 @@ Vagrant.configure("2") do |config|
   config.vm.network :private_network, ip: server_ip
   config.vm.network :forwarded_port, guest: 80, host: 8000
 
-  # Use NFS for the shared folder
-  config.vm.synced_folder ".", "/vagrant",
-            id: "core",
-            :nfs => true,
-            :mount_options => ['rw', 'noatime', 'vers=3', 'tcp', 'nolock', 'fsc']
+  # Use NFS for the shared folder, if not on Windows
+  if !Vagrant::Util::Platform.windows? then
+    print "Non-windows host detected, using NFS for shared folder mount\n"
+    config.vm.synced_folder ".", "/vagrant",
+              id: "core",
+              :nfs => true,
+              :mount_options => ['rw', 'noatime', 'vers=3', 'tcp', 'nolock', 'fsc']
+  else
+    print "Windows host detected, using default VirtualBox shared folder filesystem.\n"
+  end
 
   # If using VirtualBox
   config.vm.provider :virtualbox do |vb|
