@@ -9,22 +9,23 @@ github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github
 
 # Server Configuration
 
-# Virtual machine name to set
-vm_name          = "varpobash"
-
-# Hostname for VM, default same as VM name. Change to hostname = "yourname" if required
-hostname         = vm_name
-
-# Additional host names to register, works only if vagrant-hostmanager plugin is installed
-additional_hosts = ["phpmyadmin", "xhprof"]
-
+# Virtual machine name to set and networking
+#
 # Set a local private network IP address.
 # See http://en.wikipedia.org/wiki/Private_network for explanation
 # You can use the following IP ranges:
 #   10.0.0.1    - 10.255.255.254
 #   172.16.0.1  - 172.31.255.254
 #   192.168.0.1 - 192.168.255.254
-server_ip             = "192.168.22.10"
+vm_name             = "varpobash"
+server_ip           = "192.168.22.10"
+host_web_port       = "80"
+
+# Additional host names to register, works only if vagrant-hostmanager plugin is installed
+additional_hosts = ["phpmyadmin", "xhprof"]
+
+# Hostname for VM, default same as VM name. Change to hostname = "yourname" if required
+hostname         = vm_name
 
 # If you leave the variables empty, they will be calculated to give the VM half the RAM and all CPU's available.
 server_cpus           = "" # Cores
@@ -138,17 +139,14 @@ Vagrant.configure("2") do |config|
 
   # Create a static IP
   config.vm.network :private_network, ip: server_ip
-  config.vm.network :forwarded_port, guest: 80, host: 8000
+  config.vm.network :forwarded_port, guest: 80, host: host_web_port
 
   # Use NFS for the shared folder, if not on Windows
   if !Vagrant::Util::Platform.windows? then
-    print "Non-windows host detected, using NFS for shared folder mount\n"
     config.vm.synced_folder ".", "/vagrant",
               id: "core",
               :nfs => true,
               :mount_options => ['rw', 'noatime', 'vers=3', 'tcp', 'nolock', 'fsc']
-  else
-    print "Windows host detected, using default VirtualBox shared folder filesystem.\n"
   end
 
   # If using VirtualBox
@@ -168,8 +166,8 @@ Vagrant.configure("2") do |config|
     vb.customize ["guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 10000]
 
     # Prevent VMs running on Ubuntu to lose internet connection
-    # vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    # vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
 
   end
 
@@ -216,8 +214,10 @@ Vagrant.configure("2") do |config|
   # Provision Base Packages
   config.vm.provision "shell", path: "#{github_url}/scripts/base.sh", args: [github_url, server_swap, server_timezone]
 
-  # Provision cachefilesd to cache NFS files
-  config.vm.provision "shell", path: "#{github_url}/scripts/cachefilesd.sh", privileged: true
+  # Provision cachefilesd to cache NFS files, always apply when not Windows
+  if !Vagrant::Util::Platform.windows? then
+    config.vm.provision "shell", path: "#{github_url}/scripts/cachefilesd.sh", privileged: true
+  end
 
   # optimize base box
   config.vm.provision "shell", path: "#{github_url}/scripts/base_box_optimizations.sh", privileged: true
