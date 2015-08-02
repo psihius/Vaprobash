@@ -132,12 +132,16 @@ Vagrant.configure("2") do |config|
   end
 
   if Vagrant.has_plugin?("vagrant-hostmanager")
+    host_aliases = [];
+    additional_hosts.each_index do |i|
+      host_aliases.push(arr[i] + '.' + hostname);
+    end
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
     config.hostmanager.ignore_private_ip = false
     config.hostmanager.include_offline = false
     if !additional_hosts.empty?
-      config.hostmanager.aliases = additional_hosts
+      config.hostmanager.aliases = host_aliases
     end
   end
 
