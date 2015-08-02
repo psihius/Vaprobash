@@ -26,11 +26,13 @@ server_ip           = "192.168.22.10"
 host_web_port       = "80"
 mysql_port          = "3306"
 
-# Additional host names to register, works only if vagrant-hostmanager plugin is installed
-additional_hosts = ["phpmyadmin", "xhprof"]
-
 # Hostname for VM, default same as VM name. Change to hostname = "yourname" if required
 hostname         = vm_name
+
+# Additional host names to register, works only if vagrant-hostmanager plugin is installed
+# Creates subdomains in the form of "additiona_host.hostname"
+additional_hosts = ["phpmyadmin", "xhprof"]
+
 
 # If you leave the variables empty, they will be calculated to give the VM half the RAM and all CPU's available.
 server_cpus           = "" # Cores
@@ -380,7 +382,7 @@ Vagrant.configure("2") do |config|
   # Install XHProf profiler for PHP, requires MySQL/MariaDB
   # If 'xhprof' is removed from additional_hosts, then vhost for xhprof will not be installed
   if additional_hosts.include? 'xhprof'
-    xhprof_hostname = 'xhprof'
+    xhprof_hostname = 'xhprof.' + hostname
   else
     xhprof_hostname = ''
   end
@@ -389,7 +391,7 @@ Vagrant.configure("2") do |config|
   # Install phpMyAdmin, requires MySQL/MariaDB
   # If 'phpmyadmin' is removed from additional_hosts, then vhost for phpmyadmin will not be installed
   if additional_hosts.include? 'phpmyadmin'
-    phpmyadmin_hostname = 'phpmyadmin'
+    phpmyadmin_hostname = 'phpmyadmin.' + hostname
   else
     phpmyadmin_hostname = ''
   end
