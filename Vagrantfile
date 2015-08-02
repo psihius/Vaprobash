@@ -24,6 +24,7 @@ github_pat          = ""
 vm_name             = "varpobash"
 server_ip           = "192.168.22.10"
 host_web_port       = "80"
+mysql_port          = "3306"
 
 # Additional host names to register, works only if vagrant-hostmanager plugin is installed
 additional_hosts = ["phpmyadmin", "xhprof"]
@@ -146,6 +147,7 @@ Vagrant.configure("2") do |config|
   # Create a static IP
   config.vm.network :private_network, ip: server_ip
   config.vm.network :forwarded_port, guest: 80, host: host_web_port
+  config.vm.network :forwarded_port, guest: 3306, host: mysql_port
 
   # Use NFS for the shared folder, if not on Windows
   if !Vagrant::Util::Platform.windows? then
@@ -229,7 +231,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "#{github_url}/scripts/base_box_optimizations.sh", privileged: true
 
   # Provision PHP
-  config.vm.provision "shell", path: "#{github_url}/scripts/php.sh", args: [php_timezone, hhvm]
+  config.vm.provision "shell", path: "#{github_url}/scripts/php.sh", args: [php_timezone, hhvm, php_version]
 
   # Enable MSSQL for PHP
   # config.vm.provision "shell", path: "#{github_url}/scripts/mssql.sh"

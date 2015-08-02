@@ -38,7 +38,9 @@ else
 
     # Logging is not added by default, so let's add it
     sudo mkdir /var/log/php
-    chown -R www-data:adm /var/log/php
+    touch /var/log/php/error_fpm.log
+    touch /var/log/php/error_cli.log
+    chown -R vagrant:adm /var/log/php
     sudo sed -i "s,;error_log = .*,error_log = /var/log/php/error_fpm.log," /etc/php5/fpm/php.ini
     sudo sed -i "s,;error_log = .*,error_log = /var/log/php/error_cli.log," /etc/php5/cli/php.ini
 
