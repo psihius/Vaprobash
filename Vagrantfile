@@ -134,7 +134,7 @@ Vagrant.configure("2") do |config|
   if Vagrant.has_plugin?("vagrant-hostmanager")
     host_aliases = [];
     additional_hosts.each_index do |i|
-      host_aliases.push(arr[i] + '.' + hostname);
+      host_aliases.push(additional_hosts[i] + '.' + hostname);
     end
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
