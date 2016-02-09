@@ -18,7 +18,10 @@ This repository contains next set of changes, that probably are not going to end
     Also installs xdebug.
     
 Install vagrant-hostmanager to get husle-free hostname management, I do not work without, and expect hosts to be managed by the plugin. vagrant-share is a good idea too
+
+```bash
 $ vagrant plugin install vagrant-hostmanager vagrant-share
+```
     
 Feel free to contribute ideas and changes that make your life easier, my fork is not intended to be too generalized and
 aims at out-of-the-box ease of use. Still, you have to give the ability to change the default for people, so hardcoded
