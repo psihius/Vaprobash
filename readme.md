@@ -1,5 +1,28 @@
 # This repository
-Adds XHProf instalation script and some other various personal preferenses. Check original repository, I may have made pull requests with my stuff into it.
+This repository contains next set of changes, that probably are not going to end up in the original repo for various reasons:
+
+* By default, calculates the amount of available memory and CPU cores and gives half to the VM, does not create swap. 
+    Any of these can be specified manualy and will be respected.
+* By default forwards web (80) and mysql (3306) ports into VM (easy to edit) for easy access and ability to configure IDE SQL auto complete and validation.
+* Detects if host machine is Windows and does not enable NFS and cachefilesd if that's the case (avoiding critical errors during provisioning).
+* Cachefilesd is a package, so it can be disabled if needed (by default it is enabled in case non-windows host machine).
+* Enabled NAT related VM options by default - fixes issues with ethernet, we use Ubuntu boxes by default after all.
+* If hostmanager vagrant plugin is installed, makes hostname same as VM name.
+* Has ability to specify any number of additional hosts (provides phpmyadmin._hostname_ and xhprof._hostname_ by default, 
+    if relevant packages are enabled), avoids hostname by making additional host as sub domains of the main hostname.
+* Has phpMyAdmin package (avaliable at phpmyadmin._hostname_)
+* Has xhprof profiler for PHP package (avaliable at xhprof._hostname_)
+* Has a different file name for project-specific provisioning script, better reflecting what it represents. 
+* Removed apache-mpm-prefork installation, as it has issues with installation.
+* PHP: configures logs (/var/log/php), timezone (whatever is set in the Vagrantfile) and error reporting levels (E_ALL) out of the box.
+    Also installs xdebug.
+    
+Install vagrant-hostmanager to get husle-free hostname management, I do not work without, and expect hosts to be managed by the plugin. vagrant-share is a good idea too
+$ vagrant plugin install vagrant-hostmanager vagrant-share
+    
+Feel free to contribute ideas and changes that make your life easier, my fork is not intended to be too generalized and
+aims at out-of-the-box ease of use. Still, you have to give the ability to change the default for people, so hardcoded
+values should be avoided.
 
 # Vaprobash
 
