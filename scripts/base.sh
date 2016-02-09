@@ -20,7 +20,7 @@ fi
 echo ">>> Updating repositories"
 sudo apt-get update
 echo ">>> Upgrading the packages"
-sudo apt-get upgrade
+sudo apt-get upgrade -qq
 
 # Install base packages
 # -qq implies -y --force-yes
