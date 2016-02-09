@@ -1,6 +1,7 @@
 # This repository
 This repository contains next set of changes, that probably are not going to end up in the original repo for various reasons:
 
+* **WINDOWS FRIENDLY** (7/10, 8 should work too)
 * By default, calculates the amount of available memory and CPU cores and gives half to the VM, does not create swap. 
     Any of these can be specified manualy and will be respected.
 * By default forwards web (80) and mysql (3306) ports into VM (easy to edit) for easy access and ability to configure IDE SQL auto complete and validation.
