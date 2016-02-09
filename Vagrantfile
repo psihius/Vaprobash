@@ -66,6 +66,7 @@ end
 
 # UTC        for Universal Coordinated Time
 # EST        for Eastern Standard Time
+# CET        for Central European Time
 # US/Central for American Central
 # US/Eastern for American Eastern
 server_timezone  = "UTC"
@@ -87,6 +88,8 @@ ruby_gems             = [        # List any Ruby Gems that you want to install
   #"sass",
   #"compass",
 ]
+
+go_version            = "latest" # Example: go1.4 (latest equals the latest stable version)
 
 # To install HHVM instead of PHP, set this to "true"
 hhvm                  = "false"
@@ -151,17 +154,29 @@ Vagrant.configure("2") do |config|
   config.vm.hostname = hostname
 
   # Create a static IP
-  config.vm.network :private_network, ip: server_ip
-  config.vm.network :forwarded_port, guest: 80, host: host_web_port
-  config.vm.network :forwarded_port, guest: 3306, host: mysql_port
+  if Vagrant.has_plugin?("vagrant-auto_network")
+    config.vm.network :private_network, :ip => "0.0.0.0", :auto_network => true
+  else
+    config.vm.network :private_network, ip: server_ip
+    config.vm.network :forwarded_port, guest: 80, host: host_web_port
+    config.vm.network :forwarded_port, guest: 3306, host: mysql_port
+  end
+
+  # Enable agent forwarding over SSH connections
+  config.ssh.forward_agent = true
 
   # Use NFS for the shared folder, if not on Windows
   if !Vagrant::Util::Platform.windows? then
     config.vm.synced_folder ".", "/vagrant",
               id: "core",
               :nfs => true,
-              :mount_options => ['rw', 'noatime', 'vers=3', 'tcp', 'nolock', 'fsc']
+              :mount_options => ['nolock,vers=3,udp,noatime,actimeo=2,fsc']
   end
+
+  # Replicate local .gitconfig file if it exists
+    if File.file?(File.expand_path("~/.gitconfig"))
+        config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
+    end
 
   # If using VirtualBox
   config.vm.provider :virtualbox do |vb|
@@ -338,6 +353,9 @@ Vagrant.configure("2") do |config|
   # Install Supervisord
   # config.vm.provision "shell", path: "#{github_url}/scripts/supervisord.sh"
 
+  # Install Kibana
+  # config.vm.provision "shell", path: "#{github_url}/scripts/kibana.sh"
+
   # Install ØMQ
   # config.vm.provision "shell", path: "#{github_url}/scripts/zeromq.sh"
 
@@ -354,13 +372,16 @@ Vagrant.configure("2") do |config|
   # Install Ruby Version Manager (RVM)
   # config.vm.provision "shell", path: "#{github_url}/scripts/rvm.sh", privileged: false, args: ruby_gems.unshift(ruby_version)
 
+  # Install Go Version Manager (GVM)
+  # config.vm.provision "shell", path: "#{github_url}/scripts/go.sh", privileged: false, args: [go_version]
+
   ####
   # Frameworks and Tooling
   ##########
 
   # Provision Composer
   # You may pass a github auth token as the first argument
-  # config.vm.provision "shell", path: "#{github_url}/scripts/composer.sh", privileged: false, args: ["", composer_packages.join(" ")]
+  # config.vm.provision "shell", path: "#{github_url}/scripts/composer.sh", privileged: false, args: [github_pat, composer_packages.join(" ")]
 
   # Provision Laravel
   # config.vm.provision "shell", path: "#{github_url}/scripts/laravel.sh", privileged: false, args: [server_ip, laravel_root_folder, public_folder, laravel_version]

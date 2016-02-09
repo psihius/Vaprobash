@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-echo "Setting Timezone & Locale to $3 & C.UTF-8"
+echo "Setting Timezone & Locale to $3 & en_US.UTF-8"
 
 sudo ln -sf /usr/share/zoneinfo/$3 /etc/localtime
-sudo locale-gen C.UTF-8
-export LANG=C.UTF-8
-
-echo "export LANG=C.UTF-8" >> /home/vagrant/.bashrc
+sudo apt-get install -qq language-pack-en
+sudo locale-gen en_US
+sudo update-locale LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
 
 echo ">>> Installing Base Packages"
 
@@ -24,17 +23,7 @@ sudo apt-get upgrade -qq
 
 # Install base packages
 # -qq implies -y --force-yes
-sudo apt-get install -qq curl unzip git-core ack-grep software-properties-common build-essential debconf-utils
-
-# Git Config and set Owner
-curl --silent -L $github_url/helpers/gitconfig > /home/vagrant/.gitconfig
-sudo chown vagrant:vagrant /home/vagrant/.gitconfig
-
-# Common fixes for git
-git config --global http.postBuffer 65536000
-
-# Cache http credentials for one day while pull/push
-git config --global credential.helper 'cache --timeout=86400'
+sudo apt-get install -qq curl unzip git-core ack-grep software-properties-common build-essential
 
 
 echo ">>> Installing *.xip.io self-signed SSL"

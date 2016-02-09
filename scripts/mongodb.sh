@@ -24,7 +24,7 @@ sudo apt-get install -qq mongodb-org
 if [ $1 == "true" ]; then
     # enable remote access
     # setting the mongodb bind_ip to allow connections from everywhere
-    sed -i "s/bind_ip = */bind_ip = 0.0.0.0/" /etc/mongod.conf
+    sed -i "s/bind_ip = .*/bind_ip = 0.0.0.0/" /etc/mongod.conf
 fi
 
 # Test if PHP is installed
@@ -35,12 +35,12 @@ if [ $PHP_IS_INSTALLED -eq 0 ]; then
     # install dependencies
     sudo apt-get -y install php-pear php5-dev
 
-    # install php extencion
+    # install php extension
     echo "no" > answers.txt
     sudo pecl install mongo < answers.txt
     rm answers.txt
 
-    # add extencion file and restart service
+    # add extension file and restart service
     echo 'extension=mongo.so' | sudo tee /etc/php5/mods-available/mongo.ini
 
     ln -s /etc/php5/mods-available/mongo.ini /etc/php5/fpm/conf.d/mongo.ini

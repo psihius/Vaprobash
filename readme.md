@@ -100,6 +100,7 @@ Here's a quickstart screencast!
 * Utility
 	* Beanstalkd
 	* Supervisord
+    * Kibana
 * Additional Languages
 	* NodeJS via NVM
 	* Ruby via RVM
