@@ -30,7 +30,7 @@ sudo apt-get install -qq $mysql_package
 if [ $3 == "true" ]; then
     # enable remote access
     # setting the mysql bind-address to allow connections from everywhere
-    if [ $2 == "5.6" ]; then
+    if [ $2 == "5.6" && -f /etc/mysql/mysql.conf.d/mysqld.cnf ]; then
         sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
     else
         sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
