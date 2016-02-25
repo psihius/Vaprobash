@@ -30,10 +30,11 @@ sudo apt-get install -qq $mysql_package
 if [ $3 == "true" ]; then
     # enable remote access
     # setting the mysql bind-address to allow connections from everywhere
-    if [ $2 == "5.6" && -f /etc/mysql/mysql.conf.d/mysqld.cnf ]; then
-        sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
+    if [ $2 == "5.6"] && [ -f /etc/mysql/mysql.conf.d/mysqld.cnf ]
+    then
+        sudo sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
     else
-        sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
+        sudo sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
     fi
 
     # adding grant privileges to mysql root user from everywhere
@@ -43,8 +44,7 @@ if [ $3 == "true" ]; then
     Q1="GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$1' WITH GRANT OPTION;"
     Q2="FLUSH PRIVILEGES;"
     SQL="${Q1}${Q2}"
-
     $MYSQL -uroot -p$1 -e "$SQL"
 
-    service mysql restart
+    sudo service mysql restart
 fi
