@@ -49,7 +49,7 @@ else
     sudo apt-get install -qq php5-cli php5-fpm php5-mysql php5-pgsql php5-sqlite php5-curl php5-gd php5-gmp php5-memcached php5-imagick php5-intl php5-xdebug
 
     # We disable the mod by default because composer performance is impacted hard. Enable it in local-provisioning.sh if needed
-    php5dismod php5-xdebug
+    sudo php5dismod xdebug
 
     # Logging is not added by default, so let's add it
     sudo mkdir /var/log/php
