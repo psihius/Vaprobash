@@ -46,7 +46,7 @@ else
 
     # Install PHP
     # -qq implies -y --force-yes
-    sudo apt-get install -qq php5-cli php5-fpm php5-mysql php5-pgsql php5-sqlite php5-curl php5-gd php5-gmp php5-memcached php5-imagick php5-intl php5-xdebug
+    sudo apt-get install -qq php5-cli php5-fpm php5-mysql php5-pgsql php5-sqlite php5-curl php5-gd php5-gmp php5-memcached php5-imagick php5-intl php5-xdebug php5-apcu
 
     # We disable the mod by default because composer performance is impacted hard. Enable it in local-provisioning.sh if needed
     sudo php5dismod xdebug
@@ -91,6 +91,16 @@ xdebug.var_display_max_children = 256
 xdebug.var_display_max_data = 1024
 EOF
 
+    # APCu Config
+    cat > $(find /etc/php5 -name apcu.ini) << EOF
+extension=apcu.so
+apc.enabled=1
+apc.shm_size=128M
+apc.ttl=7200
+apc.gc_ttl=3600
+apc.enable_cli=0
+EOF
+
     # PHP Error Reporting Config
     sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php5/fpm/php.ini
     sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php5/fpm/php.ini
@@ -98,6 +108,10 @@ EOF
     # PHP Date Timezone
     sudo sed -i "s/;date.timezone =.*/date.timezone = ${PHP_TIMEZONE/\//\\/}/" /etc/php5/fpm/php.ini
     sudo sed -i "s/;date.timezone =.*/date.timezone = ${PHP_TIMEZONE/\//\\/}/" /etc/php5/cli/php.ini
+
+    # Increase realpath cache - Symfony based projects benefit especially
+    sudo sed -i "s/;realpath_cache_size =.*/realpath_cache_size = 4096k/" /etc/php5/fpm/php.ini
+    sudo sed -i "s/;realpath_cache_ttl =.*/realpath_cache_ttl = 600/" /etc/php5/fpm/php.ini
 
     sudo service php5-fpm restart
 fi
