@@ -24,9 +24,9 @@ sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again p
 
 # Install MySQL Server
 # -qq implies -y --force-yes
-sudo apt-get install -qq $mysql_package
+sudo apt-get install -qq ${mysql_package}
 
-# Make MySQL connectable from outside world without SSH tunnel
+# Make MySQL contactable from outside world without SSH tunnel
 if [ $3 == "true" ]; then
     # enable remote access
     # setting the mysql bind-address to allow connections from everywhere
@@ -44,7 +44,7 @@ if [ $3 == "true" ]; then
     Q1="GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$1' WITH GRANT OPTION;"
     Q2="FLUSH PRIVILEGES;"
     SQL="${Q1}${Q2}"
-    $MYSQL -uroot -p$1 -e "$SQL"
+    ${MYSQL} -uroot -p$1 -e "$SQL"
 
     sudo service mysql restart
 fi
