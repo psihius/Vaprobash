@@ -13,7 +13,7 @@ github_pat          = ""
 
 # Server Configuration
 
-# Virtual machine name to set and networking
+# Box name, virtual machine name to set and networking
 #
 # Set a local private network IP address.
 # See http://en.wikipedia.org/wiki/Private_network for explanation
@@ -21,6 +21,11 @@ github_pat          = ""
 #   10.0.0.1    - 10.255.255.254
 #   172.16.0.1  - 172.31.255.254
 #   192.168.0.1 - 192.168.255.254
+
+####################################
+######### !!! BOX NAME !!! #########
+####################################
+box_name            = "ubuntu/xenial64"
 vm_name             = "varpobash"
 server_ip           = "192.168.22.10"
 host_web_port       = "80"
@@ -130,7 +135,7 @@ elasticsearch_version = "2.3.1" # 5.0.0-alpha1, 2.3.1, 2.2.2, 2.1.2, 1.7.5
 Vagrant.configure("2") do |config|
 
   # Set server to Ubuntu 14.04
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = box_name
 
   config.vm.define vm_name do |vapro|
   end
@@ -255,7 +260,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "#{github_url}/scripts/base_box_optimizations.sh", privileged: true
 
   # Provision PHP
-  config.vm.provision "shell", path: "#{github_url}/scripts/php.sh", args: [php_timezone, hhvm, php_version]
+  # config.vm.provision "shell", path: "#{github_url}/scripts/php.sh", args: [php_timezone, hhvm, php_version]
 
   # Enable MSSQL for PHP
   # config.vm.provision "shell", path: "#{github_url}/scripts/mssql.sh"

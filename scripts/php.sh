@@ -101,6 +101,17 @@ apc.gc_ttl=3600
 apc.enable_cli=0
 EOF
 
+    # OPCache Config
+    cat > $(find /etc/php5 -name opcache.ini) << EOF
+zend_extension=opcache.so
+opcache.revalidate_freq=0
+;opcache.validate_timestamps=0
+opcache.max_accelerated_files=7963
+opcache.memory_consumption=192
+opcache.interned_strings_buffer=16
+opcache.fast_shutdown=1
+EOF
+
     # PHP Error Reporting Config
     sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php5/fpm/php.ini
     sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php5/fpm/php.ini
