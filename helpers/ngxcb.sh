@@ -51,7 +51,7 @@ read -d '' PHP_NO_SSL <<EOF
             try_files \$uri =404;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             # With php5-fpm:
-            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_pass /run/php/php7.0-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
@@ -69,7 +69,7 @@ read -d '' PHP_WITH_SSL <<EOF
             try_files \$uri =404;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             # With php5-fpm:
-            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_pass /run/php/php7.0-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
@@ -89,7 +89,7 @@ read -d '' PHP_NO_SSL <<EOF
             fastcgi_keep_conn on;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             # With HHVM:
-            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_pass /run/php/php7.0-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
@@ -106,7 +106,7 @@ read -d '' PHP_WITH_SSL <<EOF
             fastcgi_keep_conn on;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             # With HHVM:
-            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_pass /run/php/php7.0-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
