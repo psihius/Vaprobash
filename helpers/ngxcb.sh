@@ -93,7 +93,6 @@ read -d '' PHP_NO_SSL <<EOF
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-            fastcgi_param LARA_ENV local; # Environment variable for Laravel
             fastcgi_param HTTPS off;
         }
 EOF
@@ -110,7 +109,6 @@ read -d '' PHP_WITH_SSL <<EOF
             fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-            fastcgi_param LARA_ENV local; # Environment variable for Laravel
             fastcgi_param HTTPS on;
         }
 EOF
@@ -157,7 +155,7 @@ cat <<EOF
         ssl_certificate_key /etc/ssl/xip.io/xip.io.key;
 
         root $DocumentRoot;
-        index index.html index.htm index.php app.php app_dev.php;
+        index app_dev.php app.php index.php;
 
         # Make site accessible from ...
         server_name $ServerName;
