@@ -80,5 +80,5 @@ if [[ $APACHE_IS_INSTALLED -eq 0 ]]; then
 fi
 
 if [[ $PHP_IS_INSTALLED -eq 0 ]]; then
-    sudo service php5-fpm restart
+    sudo service php7.0-fpm restart
 fi

@@ -45,5 +45,5 @@ if [ $PHP_IS_INSTALLED -eq 0 ]; then
 
     ln -s /etc/php5/mods-available/mongo.ini /etc/php5/fpm/conf.d/mongo.ini
     ln -s /etc/php5/mods-available/mongo.ini /etc/php5/cli/conf.d/mongo.ini
-    sudo service php5-fpm restart
+    sudo service php7.0-fpm restart
 fi

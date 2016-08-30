@@ -110,5 +110,5 @@ EOF
     sudo sed -i "s/;realpath_cache_size =.*/realpath_cache_size = 4096k/" /etc/php/7.0/fpm/php.ini
     sudo sed -i "s/;realpath_cache_ttl =.*/realpath_cache_ttl = 600/" /etc/php/7.0/fpm/php.ini
 
-    sudo service php5-fpm restart
+    sudo service php7.0-fpm restart
 fi

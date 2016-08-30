@@ -21,5 +21,5 @@ echo ">>> Installing UnixODBC for MSSQL"
 # Install unixodbc
 sudo apt-get install -qq unixodbc unixodbc-dev
 
-# Restart php5-fpm
-sudo service php5-fpm restart
+# Restart php7.0-fpm
+sudo service php7.0-fpm restart

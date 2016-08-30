@@ -43,5 +43,5 @@ if [ ${PHP_IS_INSTALLED} -eq 0 ]; then
 extension=couchbase.so
 EOF
     sudo php5enmod couchbase
-    sudo service php5-fpm restart
+    sudo service php7.0-fpm restart
 fi

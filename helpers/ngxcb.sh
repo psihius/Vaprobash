@@ -44,13 +44,13 @@ function create_server_block {
 
 # Nginx Server Block config for PHP (without using SSL)
 read -d '' PHP_NO_SSL <<EOF
-        # pass the PHP scripts to php5-fpm
+        # pass the PHP scripts to php7.0-fpm
         # Note: \.php$ is susceptible to file upload attacks
         # Consider using: "location ~ ^/(index|app|app_dev|config)\.php(/|$) {"
         location ~ \.php$ {
             try_files \$uri =404;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            # With php5-fpm:
+            # With php7.0-fpm:
             fastcgi_pass unix:/run/php/php7.0-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;
@@ -62,13 +62,13 @@ EOF
 
 # Nginx Server Block config for PHP (with SSL)
 read -d '' PHP_WITH_SSL <<EOF
-        # pass the PHP scripts to php5-fpm
+        # pass the PHP scripts to php7.0-fpm
         # Note: \.php$ is susceptible to file upload attacks
         # Consider using: "location ~ ^/(index|app|app_dev|config)\.php(/|$) {"
         location ~ \.php$ {
             try_files \$uri =404;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            # With php5-fpm:
+            # With php7.0-fpm:
             fastcgi_pass unix:/run/php/php7.0-fpm.sock;
             fastcgi_index index.php;
             include fastcgi_params;
@@ -83,7 +83,7 @@ EOF
 
 # Nginx Server Block config for HHVM (without using SSL)
 read -d '' PHP_NO_SSL <<EOF
-        # pass the PHP scripts to php5-fpm
+        # pass the PHP scripts to php7.0-fpm
         location ~ \.(hh|php)$ {
             try_files \$uri =404;
             fastcgi_keep_conn on;
@@ -99,7 +99,7 @@ EOF
 
 # Nginx Server Block config for HHVM (with SSL)
 read -d '' PHP_WITH_SSL <<EOF
-        # pass the PHP scripts to php5-fpm
+        # pass the PHP scripts to php7.0-fpm
         location ~ \.(hh|php)$ {
             try_files \$uri =404;
             fastcgi_keep_conn on;
@@ -234,7 +234,7 @@ if [[ $ForceOverwrite -eq 1 ]]; then
     # remove symlink from sites-enabled directory
     rm -f "/etc/nginx/sites-enabled/${ServerBlockName}" &>/dev/null
     if [[ $? -eq 0 ]]; then
-        # if file has been removed, provide user with information that existing server 
+        # if file has been removed, provide user with information that existing server
         # block is being overwritten
         echo ">>> ${ServerBlockName} is enabled and will be overwritten"
         echo ">>> to enable this server block execute 'ngxen ${ServerBlockName}' or use the -e flag"
