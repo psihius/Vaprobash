@@ -4,7 +4,7 @@
 # Config Github Settings
 github_username = "psihius"
 github_repo     = "Vaprobash"
-github_branch   = "master"
+github_branch   = "16.04-update-php7"
 github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github_repo}/#{github_branch}"
 
 # Because this:https://developer.github.com/changes/2014-12-08-removing-authorizations-token/
@@ -65,10 +65,6 @@ if server_memory.empty?
     end
 end
 
-if server_swap.empty?
-  server_swap = server_memory
-end
-
 # UTC        for Universal Coordinated Time
 # EST        for Eastern Standard Time
 # CET        for Central European Time
@@ -78,15 +74,15 @@ server_timezone  = "UTC"
 
 # Database Configuration
 mysql_root_password   = "root"   # We'll assume user "root"
-mysql_version         = "5.6"    # Options: 5.5 | 5.6
-mysql_enable_remote   = "true"  # remote access enabled when true
+mysql_version         = "5.7"    # Options: 5.7, left if versions are going to be needed again
+mysql_enable_remote   = "true"   # remote access enabled when true
 pgsql_root_password   = "root"   # We'll assume user "root"
 mongo_version         = "2.6"    # Options: 2.6 | 3.0
 mongo_enable_remote   = "false"  # remote access enabled when true
 
 # Languages and Packages
 php_timezone          = "UTC"    # http://php.net/manual/en/timezones.php
-php_version           = "5.6"    # Options: 5.5 | 5.6
+php_version           = "7.0"    # Options: 7.0, left if versions are going to be needed again
 ruby_version          = "latest" # Choose what ruby version should be installed (will also be the default version)
 ruby_gems             = [        # List any Ruby Gems that you want to install
   #"jekyll",
