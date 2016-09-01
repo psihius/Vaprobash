@@ -63,7 +63,7 @@ else
 
     # xdebug Config
     cat > $(find /etc/php -name xdebug.ini) << EOF
-zend_extension=$(fC)
+zend_extension=$(find /usr/lib/ -name xdebug.so)
 xdebug.remote_enable = 1
 xdebug.remote_connect_back = 1
 xdebug.remote_port = 9000
