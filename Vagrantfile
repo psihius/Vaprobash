@@ -25,7 +25,7 @@ github_pat          = ""
 ####################################
 ######### !!! BOX NAME !!! #########
 ####################################
-box_name            = "ubuntu/xenial64"
+box_name            = "bento/ubuntu-16.04"
 vm_name             = "varpobash"
 server_ip           = "192.168.22.10"
 host_web_port       = "80"
