@@ -54,7 +54,7 @@ else
     # Set run-as user for PHP5-FPM processes to user/group "vagrant"
     # to avoid permission errors from apps writing to files
     sudo sed -i "s/user = www-data/user = vagrant/" /etc/php/7.0/fpm/pool.d/www.conf
-    sudo sed -i "s/group = www-data/group = vagrant/" /etc/php/7.0/fpm/pool.d/www.conf
+    sudo sed -i "s/group = www-data/group = www-data/" /etc/php/7.0/fpm/pool.d/www.conf
 
     sudo sed -i "s/listen\.owner.*/listen.owner = vagrant/" /etc/php/7.0/fpm/pool.d/www.conf
     sudo sed -i "s/listen\.group.*/listen.group = vagrant/" /etc/php/7.0/fpm/pool.d/www.conf
