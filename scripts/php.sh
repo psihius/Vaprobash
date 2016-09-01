@@ -57,7 +57,7 @@ else
     sudo sed -i "s/group = www-data/group = www-data/" /etc/php/7.0/fpm/pool.d/www.conf
 
     sudo sed -i "s/listen\.owner.*/listen.owner = vagrant/" /etc/php/7.0/fpm/pool.d/www.conf
-    sudo sed -i "s/listen\.group.*/listen.group = vagrant/" /etc/php/7.0/fpm/pool.d/www.conf
+    sudo sed -i "s/listen\.group.*/listen.group = www-data/" /etc/php/7.0/fpm/pool.d/www.conf
     sudo sed -i "s/listen\.mode.*/listen.mode = 0666/" /etc/php/7.0/fpm/pool.d/www.conf
 
 
