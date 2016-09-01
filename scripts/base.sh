@@ -18,7 +18,8 @@ fi
 # Update
 echo ">>> Updating repositories"
 sudo apt-get update
-sudo apt-mark hold grub
+sudo apt-mark hold grub2
+sudo apt-mark hold grub2-common
 echo ">>> Upgrading the packages"
 sudo apt-get upgrade -qq
 
