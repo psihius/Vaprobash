@@ -18,6 +18,7 @@ fi
 # Update
 echo ">>> Updating repositories"
 sudo apt-get update
+sudo apt-mark hold
 echo ">>> Upgrading the packages"
 sudo apt-get upgrade -qq
 
