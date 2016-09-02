@@ -21,11 +21,11 @@ sudo apt-get update
 sudo apt-mark hold grub2
 sudo apt-mark hold grub2-common
 echo ">>> Upgrading the packages"
-sudo apt-get upgrade -qq
+sudo apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confnew -qq upgrade
 
 # Install base packages
 # -qq implies -y --force-yes
-sudo apt-get install -qq curl unzip git-core ack-grep software-properties-common build-essential
+sudo apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confnew -qq install curl unzip git-core ack-grep software-properties-common build-essential
 
 
 echo ">>> Installing *.xip.io self-signed SSL"
