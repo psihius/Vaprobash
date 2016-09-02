@@ -47,8 +47,7 @@ sudo usermod -a -G www-data vagrant
 # Apache Config
 # On separate lines since some may cause an error
 # if not installed
-sudo a2dismod mpm_prefork
-sudo a2dismod php5
+sudo a2dismod mpm_prefork php5 mpm_prefork
 sudo a2enmod mpm_worker rewrite actions ssl
 curl --silent -L $github_url/helpers/vhost.sh > vhost
 sudo chmod guo+x vhost
