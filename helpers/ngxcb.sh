@@ -48,13 +48,12 @@ read -d '' PHP_NO_SSL <<EOF
         # Note: \.php$ is susceptible to file upload attacks
         # Consider using: "location ~ ^/(index|app|app_dev|config)\.php(/|$) {"
         location ~ \.php$ {
-            try_files \$uri =404;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             # With php7.0-fpm:
             fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-            fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+            fastcgi_param DOCUMENT_ROOT \$realpath_root;
             fastcgi_param LARA_ENV local; # Environment variable for Laravel
             fastcgi_param HTTPS off;
         }
@@ -66,13 +65,12 @@ read -d '' PHP_WITH_SSL <<EOF
         # Note: \.php$ is susceptible to file upload attacks
         # Consider using: "location ~ ^/(index|app|app_dev|config)\.php(/|$) {"
         location ~ \.php$ {
-            try_files \$uri =404;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             # With php7.0-fpm:
             fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-            fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+            fastcgi_param DOCUMENT_ROOT \$realpath_root;
             fastcgi_param LARA_ENV local; # Environment variable for Laravel
             fastcgi_param HTTPS on;
         }
@@ -85,14 +83,13 @@ EOF
 read -d '' PHP_NO_SSL <<EOF
         # pass the PHP scripts to php7.0-fpm
         location ~ \.(hh|php)$ {
-            try_files \$uri =404;
             fastcgi_keep_conn on;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             # With HHVM:
             fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-            fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+            fastcgi_param DOCUMENT_ROOT \$realpath_root;
             fastcgi_param HTTPS off;
         }
 EOF
@@ -101,14 +98,13 @@ EOF
 read -d '' PHP_WITH_SSL <<EOF
         # pass the PHP scripts to php7.0-fpm
         location ~ \.(hh|php)$ {
-            try_files \$uri =404;
             fastcgi_keep_conn on;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             # With HHVM:
             fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-            fastcgi_index index.php;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+            fastcgi_param DOCUMENT_ROOT \$realpath_root;
             fastcgi_param HTTPS on;
         }
 EOF
@@ -120,7 +116,7 @@ cat <<EOF
         listen 80;
 
         root $DocumentRoot;
-        index index.html index.htm index.php app.php app_dev.php;
+        index app_dev.php app.php index.php;
 
         # Make site accessible from ...
         server_name $ServerName;
@@ -131,13 +127,11 @@ cat <<EOF
         charset utf-8;
 
         location / {
-            try_files \$uri \$uri/ /app.php?\$query_string /index.php?\$query_string;
+            try_files \$uri /app_dev.php?\$is_args\$args /app.php?\$is_args\$args /index.php?\$is_args\$args;
         }
 
         location = /favicon.ico { log_not_found off; access_log off; }
         location = /robots.txt  { access_log off; log_not_found off; }
-
-        error_page 404 /index.php;
 
         $PHP_NO_SSL
 
@@ -166,13 +160,11 @@ cat <<EOF
         charset utf-8;
 
         location / {
-            try_files \$uri \$uri/ /app.php?\$query_string /index.php?\$query_string;
+            try_files \$uri /app_dev.php?\$is_args\$args /app.php?\$is_args\$args /index.php?\$is_args\$args;
         }
 
         location = /favicon.ico { log_not_found off; access_log off; }
         location = /robots.txt  { access_log off; log_not_found off; }
-
-        error_page 404 /index.php;
 
         $PHP_WITH_SSL
 
