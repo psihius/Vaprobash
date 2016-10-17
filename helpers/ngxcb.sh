@@ -88,8 +88,8 @@ read -d '' PHP_NO_SSL <<EOF
             # With HHVM:
             fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
             include fastcgi_params;
-            fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
             fastcgi_param DOCUMENT_ROOT \$realpath_root;
+            fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
             fastcgi_param HTTPS off;
         }
 EOF
@@ -103,8 +103,8 @@ read -d '' PHP_WITH_SSL <<EOF
             # With HHVM:
             fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
             include fastcgi_params;
-            fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
             fastcgi_param DOCUMENT_ROOT \$realpath_root;
+            fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
             fastcgi_param HTTPS on;
         }
 EOF
