@@ -4,7 +4,7 @@
 # Config Github Settings
 github_username = "psihius"
 github_repo     = "Vaprobash"
-github_branch   = "16.04-update-php7"
+github_branch   = "master"
 github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github_repo}/#{github_branch}"
 
 # Because this:https://developer.github.com/changes/2014-12-08-removing-authorizations-token/
@@ -82,7 +82,7 @@ mongo_enable_remote   = "false"  # remote access enabled when true
 
 # Languages and Packages
 php_timezone          = "UTC"    # http://php.net/manual/en/timezones.php
-php_version           = "7.0"    # Options: 7.0, left if versions are going to be needed again
+php_version           = "7.1"    # Options: 7.0, left if versions are going to be needed again
 ruby_version          = "latest" # Choose what ruby version should be installed (will also be the default version)
 ruby_gems             = [        # List any Ruby Gems that you want to install
   #"jekyll",
