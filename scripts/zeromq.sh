@@ -6,15 +6,17 @@ PHP_IS_INSTALLED=$?
 
 [[ $PHP_IS_INSTALLED -ne 0 ]] && { printf "!!! PHP is not installed.\n    Installing ØMQ aborted!\n"; exit 0; }
 
+PHP_VERSION=$(ls -lah /etc/init.d/php*fpm | grep -oP 'php\K[[:digit:]]\.[[:digit:]]')
+
 echo ">>> Installing ØMQ"
 
 sudo add-apt-repository -qq pp:chris-lea/zeromq
 sudo apt-get update -qq
-sudo apt-get install -qq libtool autoconf automake uuid uuid-dev uuid-runtime build-essential php5-dev pkg-config libzmq3-dbg libzmq3-dev libzmq3
+sudo apt-get install -qq libtool autoconf automake uuid uuid-dev uuid-runtime build-essential php{PHP_VERSION}-dev pkg-config libzmq3-dbg libzmq3-dev libzmq3
 
 echo "" | sudo pecl install zmq-beta > /dev/null
 
-sudo echo "extension=zmq.so" >> /etc/php5/mods-available/zmq.ini
-sudo php5enmod zmq > /dev/null
-sudo service php7.0-fpm restart > /dev/null
+sudo echo "extension=zmq.so" >> /etc/php/{PHP_VERSION}/mods-available/zmq.ini
+sudo phpenmod zmq > /dev/null
+sudo service php${PHP_VERSION}-fpm restart > /dev/null
 

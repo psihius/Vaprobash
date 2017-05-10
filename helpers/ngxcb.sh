@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+PHP_VERSION=$(ls -lah /etc/init.d/php*fpm | grep -oP 'php\K[[:digit:]]\.[[:digit:]]')
+
 # Show the usage for NGXCB
 function show_usage {
 cat <<EOF
@@ -44,13 +46,13 @@ function create_server_block {
 
 # Nginx Server Block config for PHP (without using SSL)
 read -d '' PHP_NO_SSL <<EOF
-        # pass the PHP scripts to php7.0-fpm
+        # pass the PHP scripts to php${PHP_VERSION}-fpm
         # Note: \.php$ is susceptible to file upload attacks
         # Consider using: "location ~ ^/(index|app|app_dev|config)\.php(/|$) {"
         location ~ \.php$ {
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            # With php7.0-fpm:
-            fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+            # With php${PHP_VERSION}-fpm:
+            fastcgi_pass unix:/var/run/php/php${PHP_VERSION}-fpm.sock;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
             fastcgi_param DOCUMENT_ROOT \$realpath_root;
@@ -61,13 +63,13 @@ EOF
 
 # Nginx Server Block config for PHP (with SSL)
 read -d '' PHP_WITH_SSL <<EOF
-        # pass the PHP scripts to php7.0-fpm
+        # pass the PHP scripts to php${PHP_VERSION}-fpm
         # Note: \.php$ is susceptible to file upload attacks
         # Consider using: "location ~ ^/(index|app|app_dev|config)\.php(/|$) {"
         location ~ \.php$ {
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            # With php7.0-fpm:
-            fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+            # With php${PHP_VERSION}-fpm:
+            fastcgi_pass unix:/var/run/php/php${PHP_VERSION}-fpm.sock;
             include fastcgi_params;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
             fastcgi_param DOCUMENT_ROOT \$realpath_root;
@@ -81,12 +83,12 @@ EOF
 
 # Nginx Server Block config for HHVM (without using SSL)
 read -d '' PHP_NO_SSL <<EOF
-        # pass the PHP scripts to php7.0-fpm
+        # pass the PHP scripts to php${PHP_VERSION}-fpm
         location ~ \.(hh|php)$ {
             fastcgi_keep_conn on;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             # With HHVM:
-            fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+            fastcgi_pass unix:/var/run/php/php${PHP_VERSION}-fpm.sock;
             include fastcgi_params;
             fastcgi_param DOCUMENT_ROOT \$realpath_root;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
@@ -96,12 +98,12 @@ EOF
 
 # Nginx Server Block config for HHVM (with SSL)
 read -d '' PHP_WITH_SSL <<EOF
-        # pass the PHP scripts to php7.0-fpm
+        # pass the PHP scripts to php${PHP_VERSION}-fpm
         location ~ \.(hh|php)$ {
             fastcgi_keep_conn on;
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             # With HHVM:
-            fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+            fastcgi_pass unix:/var/run/php/php${PHP_VERSION}-fpm.sock;
             include fastcgi_params;
             fastcgi_param DOCUMENT_ROOT \$realpath_root;
             fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;

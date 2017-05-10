@@ -35,6 +35,8 @@ else
     github_url="$4"
 fi
 
+PHP_VERSION=$(ls -lah /etc/init.d/php*fpm | grep -oP 'php\K[[:digit:]]\.[[:digit:]]')
+
 # Install Apache
 # -qq implies -y --force-yes
 sudo apt-get install -qq apache2
@@ -47,7 +49,7 @@ sudo usermod -a -G www-data vagrant
 # Apache Config
 # On separate lines since some may cause an error
 # if not installed
-sudo a2dismod mpm_prefork php5 mpm_prefork
+sudo a2dismod mpm_prefork php{$PHP_VERSION} mpm_prefork
 sudo a2enmod mpm_worker rewrite actions ssl
 curl --silent -L $github_url/helpers/vhost.sh > vhost
 sudo chmod guo+x vhost

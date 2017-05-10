@@ -6,6 +6,9 @@
 #
 #   Show Usage, Output to STDERR
 #
+
+PHP_VERSION=$(ls -lah /etc/init.d/php*fpm | grep -oP 'php\K[[:digit:]]\.[[:digit:]]')
+
 function show_usage {
 cat <<- _EOF_
 
@@ -55,7 +58,7 @@ cat <<- _EOF_
         <FilesMatch \.php$>
             # Change this "proxy:unix:/path/to/fpm.socket"
             # if using a Unix socket
-            SetHandler "proxy:unix:/var/run/php/php7.0-fpm.sock|fcgi://127.0.0.1:9000"
+            SetHandler "proxy:unix:/var/run/php/php${PHP_VERSION}-fpm.sock|fcgi://127.0.0.1:9000"
         </FilesMatch>
     </Directory>
 
@@ -89,7 +92,7 @@ cat <<- _EOF_
         <FilesMatch \.php$>
             # Change this "proxy:unix:/path/to/fpm.socket"
             # if using a Unix socket
-            SetHandler "proxy:unix:/var/run/php/php7.0-fpm.sock|fcgi://127.0.0.1:9000"
+            SetHandler "proxy:unix:/var/run/php/php${PHP_VERSION}-fpm.sock|fcgi://127.0.0.1:9000"
         </FilesMatch>
     </Directory>
 

@@ -18,17 +18,19 @@ PHP_IS_INSTALLED=$?
 dpkg -s php-pear
 PEAR_IS_INSTALLED=$?
 
-dpkg -s php5-dev
-PHPDEV_IS_INSTALLED=$?
-
 if [ ${PHP_IS_INSTALLED} -eq 0 ]; then
+
+    PHP_VERSION=$(ls -lah /etc/init.d/php*fpm | grep -oP 'php\K[[:digit:]]\.[[:digit:]]')
 
     if [ ${PEAR_IS_INSTALLED} -eq 1 ]; then
         sudo apt-get -qq install php-pear
     fi
 
+    dpkg -s php{$PHP_VERSION}-dev
+    PHPDEV_IS_INSTALLED=$?
+
     if [ ${PHPDEV_IS_INSTALLED} -eq 1 ]; then
-        sudo apt-get -qq install php5-dev
+        sudo apt-get -qq install php{$PHP_VERSION}-dev
     fi
 
     sudo wget --quiet -O/etc/apt/sources.list.d/couchbase.list http://packages.couchbase.com/ubuntu/couchbase-ubuntu1204.list
@@ -37,11 +39,11 @@ if [ ${PHP_IS_INSTALLED} -eq 0 ]; then
     sudo apt-get -qq install libcouchbase2-libevent libcouchbase-dev
 
     sudo pecl install couchbase-1.2.2
-    sudo cat > /etc/php5/mods-available/couchbase.ini << EOF
+    sudo cat > /etc/php/{$PHP_VERSION}/mods-available/couchbase.ini << EOF
 ; configuration for php couchbase module
 ; priority=30
 extension=couchbase.so
 EOF
-    sudo php5enmod couchbase
-    sudo service php7.0-fpm restart
+    sudo phpenmod couchbase
+    sudo service php{$PHP_VERSION}-fpm restart
 fi

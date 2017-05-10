@@ -38,7 +38,7 @@ else
 
     # Install PHP
     # -qq implies -y --force-yes
-    sudo apt-get install -qq php${PHP_VERSION} php-cli php-fpm php-mysql php-pgsql php-sqlite3 php-curl php-gd php-gmp php-memcached php-imagick php-intl php-xdebug php-apcu
+    sudo apt-get install -qq php${PHP_VERSION} php${PHP_VERSION}-cli php${PHP_VERSION}-fpm php${PHP_VERSION}-mysql php${PHP_VERSION}-pgsql php${PHP_VERSION}-sqlite3 php${PHP_VERSION}-curl php${PHP_VERSION}-gd php${PHP_VERSION}-gmp php${PHP_VERSION}-memcached php${PHP_VERSION}-imagick php${PHP_VERSION}-intl php${PHP_VERSION}-xdebug php${PHP_VERSION}-apcu
 
     # We disable the mod by default because composer performance is impacted hard. Enable it in local-provisioning.sh if needed
     sudo phpdismod xdebug
@@ -62,7 +62,7 @@ else
     # Set PHP FPM allowed clients IP address
     sudo sed -i "s/;listen.allowed_clients/listen.allowed_clients/" /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
 
-    # Set run-as user for PHP5-FPM processes to user/group "vagrant"
+    # Set run-as user for PHP-FPM processes to user/group "vagrant"
     # to avoid permission errors from apps writing to files
     sudo sed -i "s/user = www-data/user = vagrant/" /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
     sudo sed -i "s/group = www-data/group = www-data/" /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf

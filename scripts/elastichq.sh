@@ -37,6 +37,7 @@ fi
 
 # Set and enable configuration for Nginx
 if [ $NGINX_IS_INSTALLED -eq 0 ]; then
+    PHP_VERSION=$(ls -lah /etc/init.d/php*fpm | grep -oP 'php\K[[:digit:]]\.[[:digit:]]')
     sudo ngxdis vagrant
     sudo sed -i '$ d' /etc/nginx/sites-available/vagrant
 sudo tee -a /etc/nginx/sites-available/vagrant > /dev/null <<'EOF'
@@ -47,7 +48,7 @@ sudo tee -a /etc/nginx/sites-available/vagrant > /dev/null <<'EOF'
        location ~ ^/elastichq/(.+\.php)$ {
            try_files $uri =404;
            root /usr/share/;
-           fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+           fastcgi_pass unix:/run/php/php{$PHP_VERSION}-fpm.sock;
            fastcgi_index index.php;
            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
            include /etc/nginx/fastcgi_params;
