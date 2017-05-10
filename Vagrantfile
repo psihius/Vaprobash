@@ -36,7 +36,7 @@ hostname         = vm_name + '.dev'
 
 # Additional host names to register, works only if vagrant-hostmanager plugin is installed
 # Creates subdomains in the form of "additiona_host.hostname"
-additional_hosts = ["phpmyadmin", "xhprof"]
+additional_hosts = ["phpmyadmin"]
 
 
 # If you leave the variables empty, they will be calculated to give the VM half the RAM and all CPU's available.
@@ -407,15 +407,6 @@ Vagrant.configure("2") do |config|
 
   # Install Android
   # config.vm.provision "shell", path: "#{github_url}/scripts/android.sh"
-
-  # Install XHProf profiler for PHP, requires MySQL/MariaDB
-  # If 'xhprof' is removed from additional_hosts, then vhost for xhprof will not be installed
-  if additional_hosts.include? 'xhprof'
-    xhprof_hostname = 'xhprof.' + hostname
-  else
-    xhprof_hostname = ''
-  end
-  # config.vm.provision "shell", path: "#{github_url}/scripts/xhprof.sh", args: [server_ip, mysql_root_password, xhprof_hostname]
 
   # Install phpMyAdmin, requires MySQL/MariaDB
   # If 'phpmyadmin' is removed from additional_hosts, then vhost for phpmyadmin will not be installed
