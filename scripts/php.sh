@@ -6,7 +6,8 @@ PHP_TIMEZONE=$1
 HHVM=$2
 PHP_VERSION=$3
 
-if [[ $HHVM == "true" ]]; then
+if [[ $HHVM == "true" ]];
+then
 
     echo ">>> Installing HHVM"
 
@@ -43,7 +44,8 @@ else
     sudo phpdismod xdebug
 
     # Logging is not added by default, so let's add it
-    if [ ! -d /var/log/php] then
+    if [ ! -d /var/log/php ];
+    then
         sudo mkdir /var/log/php
     fi
 
