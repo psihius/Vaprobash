@@ -23,7 +23,7 @@ elif [[ $NUMBER_OF_ARG -eq 2 ]]; then
 else
     # Default Nodejs version when nothing is given
     NODEJS_VERSION=latest
-    GITHUB_URL="https://raw.githubusercontent.com/fideloper/Vaprobash/master"
+    GITHUB_URL="https://raw.githubusercontent.com/psihius/Vaprobash/master"
 fi
 
 # True, if Node is not installed
