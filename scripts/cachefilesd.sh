@@ -2,4 +2,5 @@
 
 sudo apt-get install -qq cachefilesd
 echo "RUN=yes" | sudo tee /etc/default/cachefilesd > /dev/null
-sudo service cachefilesd restart
+sudo systemctl enable cachefilesd
+sudo systemctl start cachefilesd
