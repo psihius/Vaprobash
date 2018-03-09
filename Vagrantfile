@@ -22,27 +22,35 @@ github_pat          = ""
 #   172.16.0.1  - 172.31.255.254
 #   192.168.0.1 - 192.168.255.254
 
-####################################
-######### !!! BOX NAME !!! #########
-####################################
+######################################
+######### !!! BOX CONFIG !!! #########
+######################################
 box_name            = "bento/ubuntu-16.04"
 vm_name             = "varpobash"
 server_ip           = "192.168.22.10"
 host_web_port       = "80"
 mysql_port          = "3306"
 
-# Hostname for VM, default same as VM name. Change to hostname = "yourname" if required
-hostname         = vm_name + '.dev'
-
 # Additional host names to register, works only if vagrant-hostmanager plugin is installed
 # Creates subdomains in the form of "additiona_host.hostname"
 additional_hosts = ["phpmyadmin"]
+
+# UTC        for Universal Coordinated Time
+# EST        for Eastern Standard Time
+# CET        for Central European Time
+# US/Central for American Central
+# US/Eastern for American Eastern
+server_timezone  = "UTC"
 
 
 # If you leave the variables empty, they will be calculated to give the VM half the RAM and all CPU's available.
 server_cpus           = "" # Cores
 server_memory         = "" # MB
 server_swap           = "" # Options: false | int (MB) - Guideline: Between one or two times the server_memory
+
+# Hostname for VM, default same as VM name + '.local' part
+hostname         = vm_name + '.local'
+
 
 host_os = RbConfig::CONFIG['host_os']
 if server_cpus.empty?
@@ -65,16 +73,9 @@ if server_memory.empty?
     end
 end
 
-# UTC        for Universal Coordinated Time
-# EST        for Eastern Standard Time
-# CET        for Central European Time
-# US/Central for American Central
-# US/Eastern for American Eastern
-server_timezone  = "UTC"
-
 # Database Configuration
 mysql_root_password   = "root"   # We'll assume user "root"
-mysql_version         = "5.7"    # Options: 5.7, left if versions are going to be needed again
+mysql_version         = "5.7"    #
 mysql_enable_remote   = "true"   # remote access enabled when true
 pgsql_root_password   = "root"   # We'll assume user "root"
 mongo_version         = "2.6"    # Options: 2.6 | 3.0
@@ -82,7 +83,7 @@ mongo_enable_remote   = "false"  # remote access enabled when true
 
 # Languages and Packages
 php_timezone          = "UTC"    # http://php.net/manual/en/timezones.php
-php_version           = "7.1"    # Options: 7.0, left if versions are going to be needed again
+php_version           = "7.2"    # Options: 5.6, 7.0, 7.1, 7.2 - uses ondrej/php PPA
 ruby_version          = "latest" # Choose what ruby version should be installed (will also be the default version)
 ruby_gems             = [        # List any Ruby Gems that you want to install
   #"jekyll",
@@ -91,9 +92,6 @@ ruby_gems             = [        # List any Ruby Gems that you want to install
 ]
 
 go_version            = "latest" # Example: go1.4 (latest equals the latest stable version)
-
-# To install HHVM instead of PHP, set this to "true"
-hhvm                  = "false"
 
 # PHP Options
 composer_packages     = [        # List any global Composer packages that you want to install
@@ -125,8 +123,6 @@ rabbitmq_user = "user"
 rabbitmq_password = "password"
 
 sphinxsearch_version  = "rel22" # rel20, rel21, rel22, beta, daily, stable
-
-elasticsearch_version = "2.3.1" # 5.0.0-alpha1, 2.3.1, 2.2.2, 2.1.2, 1.7.5
 
 Vagrant.configure("2") do |config|
 
@@ -256,7 +252,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "#{github_url}/scripts/base_box_optimizations.sh", privileged: true
 
   # Provision PHP
-  # config.vm.provision "shell", path: "#{github_url}/scripts/php.sh", args: [php_timezone, hhvm, php_version]
+  # config.vm.provision "shell", path: "#{github_url}/scripts/php.sh", args: [php_timezone, php_version]
 
   # Enable MSSQL for PHP
   # config.vm.provision "shell", path: "#{github_url}/scripts/mssql.sh"
@@ -314,7 +310,7 @@ Vagrant.configure("2") do |config|
   ##########
 
   # Install Elasticsearch
-  # config.vm.provision "shell", path: "#{github_url}/scripts/elasticsearch.sh", args: [elasticsearch_version]
+  # config.vm.provision "shell", path: "#{github_url}/scripts/elasticsearch.sh"
 
   # Install SphinxSearch
   # config.vm.provision "shell", path: "#{github_url}/scripts/sphinxsearch.sh", args: [sphinxsearch_version]

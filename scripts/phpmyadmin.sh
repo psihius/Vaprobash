@@ -40,7 +40,7 @@ if [[ $NGING_IS_INSTALLED -eq 0 ]]; then
     sudo ngxcb -d $public_folder -n $3 -s "$3.$1.xip.io $3" -e
 fi
 
-# MAke a vhost for Apache
+# Make a vhost for Apache
 if [[ $APACHE_IS_INSTALLED -eq 0 ]]; then
     sudo vhost -s $3.$1.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -a $3
 else

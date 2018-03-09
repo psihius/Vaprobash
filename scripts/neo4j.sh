@@ -5,7 +5,7 @@ echo ">>> Installing Neo4J"
 # Install prerequisite: Java
 # -qq implies -y --force-yes
 sudo apt-get update
-sudo apt-get install -qq openjdk-7-jre-headless
+sudo apt-get install -qq openjdk-8-jre-headless
 
 # Add the Neo4J key into the apt package manager:
 wget -O - http://debian.neo4j.org/neotechnology.gpg.key | apt-key add -

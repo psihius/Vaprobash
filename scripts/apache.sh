@@ -4,13 +4,6 @@
 php -v > /dev/null 2>&1
 PHP_IS_INSTALLED=$?
 
-# Test if HHVM is installed
-hhvm --version > /dev/null 2>&1
-HHVM_IS_INSTALLED=$?
-
-# If HHVM is installed, assume PHP is *not*
-[[ $HHVM_IS_INSTALLED -eq 0 ]] && { PHP_IS_INSTALLED=-1; }
-
 echo ">>> Installing Apache Server"
 
 [[ -z $1 ]] && { echo "!!! IP address not set. Check the Vagrant file."; exit 1; }
@@ -60,14 +53,11 @@ sudo vhost -s $server_ip.xip.io -d $public_folder -p /etc/ssl/xip.io -c xip.io -
 sudo a2dissite 000-default
 
 # If PHP is installed or HHVM is installed, proxy PHP requests to it
-if [[ $PHP_IS_INSTALLED -eq 0 || $HHVM_IS_INSTALLED -eq 0 ]]; then
+if [[ $PHP_IS_INSTALLED -eq 0 ]]; then
 
     # PHP Config for Apache
     sudo a2enmod proxy_fcgi
-else
-    # vHost script assumes ProxyPassMatch to PHP
-    # If PHP is not installed, we'll comment it out
-    sudo sed -i "s@ProxyPassMatch@#ProxyPassMatch@" /etc/apache2/sites-available/$1.xip.io.conf
 fi
 
-sudo service apache2 restart
+sudo systemctl enable apache2
+sudo systemctl restart apache2

@@ -36,4 +36,5 @@ if [ ! -z "$1" ]; then
 	fi # persistent
 fi # arg check
 
-sudo service redis-server restart
+sudo systemctl enable redis-server
+sudo systemctl restart redis-server

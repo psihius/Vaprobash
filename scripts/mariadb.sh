@@ -5,7 +5,7 @@ echo ">>> Installing MariaDB"
 [[ -z $1 ]] && { echo "!!! MariaDB root password not set. Check the Vagrant file."; exit 1; }
 
 # default version
-MARIADB_VERSION='10.1'
+MARIADB_VERSION='10.2'
 
 # Import repo key
 sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db

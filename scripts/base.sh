@@ -3,8 +3,8 @@
 echo "Setting Timezone & Locale to $3 & en_US.UTF-8"
 
 sudo ln -sf /usr/share/zoneinfo/$3 /etc/localtime
-sudo apt-get install -qq language-pack-en
-sudo locale-gen en_US
+sudo apt-get install -qq language-pack-en python-software-properties software-properties-common apt-transport-https
+sudo locale-gen en_US.UTF-8
 sudo update-locale LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
 
 echo ">>> Installing Base Packages"

@@ -4,14 +4,7 @@
 php -v > /dev/null 2>&1
 PHP_IS_INSTALLED=$?
 
-# Test if HHVM is installed
-hhvm --version > /dev/null 2>&1
-HHVM_IS_INSTALLED=$?
-
 PHP_VERSION=$(ls -lah /etc/init.d/php*fpm | grep -oP 'php\K[[:digit:]]\.[[:digit:]]')
-
-# If HHVM is installed, assume PHP is *not*
-[[ $HHVM_IS_INSTALLED -eq 0 ]] && { PHP_IS_INSTALLED=-1; }
 
 echo ">>> Installing Nginx"
 
@@ -58,17 +51,18 @@ curl --silent -L $github_url/helpers/ngxcb.sh > ngxcb
 sudo chmod guo+x ngxen ngxdis ngxcb
 sudo mv ngxen ngxdis ngxcb /usr/local/bin
 
-# Create Nginx Server Block named "vagrant" and enable it
-sudo ngxcb -d $public_folder -s "$1.xip.io$hostname" -e
+# Create Nginx Server Block with same name as hostname
+sudo ngxcb -n "$hostname" -d $public_folder -s "$1.xip.io$hostname $hostname" -e
 
 # Disable "default"
 sudo ngxdis default
 
-if [[ $HHVM_IS_INSTALLED -ne 0 && $PHP_IS_INSTALLED -eq 0 ]]; then
+if [[ $PHP_IS_INSTALLED -eq 0 ]]; then
     # PHP-FPM Config for Nginx
-    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/7.0/fpm/php.ini
+    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php/${PHP_VERSION}/fpm/php.ini
 
     sudo service php${PHP_VERSION}-fpm restart
 fi
 
-sudo service nginx restart
+sudo systemctl enable nginx
+sudo systemctl restart nginx

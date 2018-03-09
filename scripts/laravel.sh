@@ -6,11 +6,7 @@ echo ">>> Installing Laravel"
 php -v > /dev/null 2>&1
 PHP_IS_INSTALLED=$?
 
-# Test if HHVM is installed
-hhvm --version > /dev/null 2>&1
-HHVM_IS_INSTALLED=$?
-
-[[ $HHVM_IS_INSTALLED -ne 0 && $PHP_IS_INSTALLED -ne 0 ]] && { printf "!!! PHP/HHVM is not installed.\n    Installing Laravel aborted!\n"; exit 0; }
+[[ $PHP_IS_INSTALLED -ne 0 ]] && { printf "!!! PHP/HHVM is not installed.\n    Installing Laravel aborted!\n"; exit 0; }
 
 # Test if Composer is installed
 composer -v > /dev/null 2>&1 || { printf "!!! Composer is not installed.\n    Installing Laravel aborted!"; exit 0; }
@@ -40,33 +36,17 @@ if [[ ! -d $laravel_root_folder ]]; then
 fi
 
 if [[ ! -f "$laravel_root_folder/composer.json" ]]; then
-    if [[ $HHVM_IS_INSTALLED -eq 0 ]]; then
-        # Create Laravel
-        if [[ "$4" == 'latest-stable' ]]; then
-            hhvm -v ResourceLimit.SocketDefaultTimeout=30 -v Http.SlowQueryThreshold=30000 -v Eval.Jit=false /usr/local/bin/composer \
-            create-project --prefer-dist laravel/laravel $laravel_root_folder
-        else
-            hhvm -v ResourceLimit.SocketDefaultTimeout=30 -v Http.SlowQueryThreshold=30000 -v Eval.Jit=false /usr/local/bin/composer \
-            create-project laravel/laravel:$4 $laravel_root_folder
-        fi
+    # Create Laravel
+    if [[ "$4" == 'latest-stable' ]]; then
+        composer create-project --prefer-dist laravel/laravel $laravel_root_folder
     else
-        # Create Laravel
-        if [[ "$4" == 'latest-stable' ]]; then
-            composer create-project --prefer-dist laravel/laravel $laravel_root_folder
-        else
-            composer create-project laravel/laravel:$4 $laravel_root_folder
-        fi
+        composer create-project laravel/laravel:$4 $laravel_root_folder
     fi
 else
     # Go to vagrant folder
     cd $laravel_root_folder
 
-    if [[ $HHVM_IS_INSTALLED -eq 0 ]]; then
-        hhvm -v ResourceLimit.SocketDefaultTimeout=30 -v Http.SlowQueryThreshold=30000 -v Eval.Jit=false /usr/local/bin/composer \
-        install --prefer-dist
-    else
-        composer install --prefer-dist
-    fi
+    composer install --prefer-dist
 
     # Go to the previous folder
     cd -
@@ -75,7 +55,7 @@ fi
 if [[ $NGINX_IS_INSTALLED -eq 0 ]]; then
     # Change default vhost created
     sudo sed -i "s@root /vagrant@root $laravel_public_folder@" /etc/nginx/sites-available/vagrant
-    sudo service nginx reload
+    sudo systemctl realod nginx
 fi
 
 if [[ $APACHE_IS_INSTALLED -eq 0 ]]; then
@@ -86,5 +66,5 @@ if [[ $APACHE_IS_INSTALLED -eq 0 ]]; then
     sudo sed -i "s@$3@$laravel_public_folder@" /etc/apache2/sites-available/$1.xip.io.conf
 
 
-    sudo service apache2 reload
+    sudo systemctl reload apache2
 fi
